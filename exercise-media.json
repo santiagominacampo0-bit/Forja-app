@@ -1,0 +1,871 @@
+{
+  "source": "ExerciseDB (AscendAPI)",
+  "generatedAt": "2026-10-13T05:30:00.000Z",
+  "exercises": [
+    {
+      "id": "chest-press",
+      "name": "Press de pecho en máquina",
+      "query": "lever chest press",
+      "match": "Machine Chest Press",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/DOoWcnA.gif",
+      "exerciseId": "DOoWcnA",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "pectorals"
+      ]
+    },
+    {
+      "id": "db-bench",
+      "name": "Press plano con mancuernas",
+      "query": "dumbbell bench press",
+      "match": "dumbbell bench press",
+      "score": 1.58,
+      "gifUrl": "https://static.exercisedb.dev/media/SpYC0Kp.gif",
+      "exerciseId": "SpYC0Kp",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "pectorals"
+      ]
+    },
+    {
+      "id": "db-incline",
+      "name": "Press inclinado con mancuernas",
+      "query": "incline dumbbell press",
+      "match": "dumbbell incline hammer press",
+      "score": 1.06,
+      "gifUrl": "https://static.exercisedb.dev/media/PG1kcIb.gif",
+      "exerciseId": "PG1kcIb",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "pectorals"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "pec-deck",
+      "name": "Aperturas en peck deck",
+      "query": "lever pec deck fly",
+      "match": "Machine Seated Fly",
+      "score": 0.79,
+      "gifUrl": "https://static.exercisedb.dev/media/v3xmPAR.gif",
+      "exerciseId": "v3xmPAR",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "pectorals"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "cable-chest-fly",
+      "name": "Cruce de poleas para pecho",
+      "query": "cable chest fly",
+      "match": "Cable Single-Arm Decline Chest Fly",
+      "score": 0.97,
+      "gifUrl": "https://static.exercisedb.dev/media/w4dLzSx.gif",
+      "exerciseId": "w4dLzSx",
+      "equipments": [
+        "cable"
+      ],
+      "targetMuscles": [
+        "pectorals"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "push-up",
+      "name": "Flexiones",
+      "query": "push up",
+      "match": "push-up",
+      "score": 1.58,
+      "gifUrl": "https://static.exercisedb.dev/media/I4hDWkc.gif",
+      "exerciseId": "I4hDWkc",
+      "equipments": [
+        "bodyweight"
+      ],
+      "targetMuscles": [
+        "pectorals"
+      ]
+    },
+    {
+      "id": "lat-pulldown",
+      "name": "Jalón al pecho",
+      "query": "lat pulldown",
+      "match": "Reverse-Grip Machine Lat Pulldown",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/ecpY0rH.gif",
+      "exerciseId": "ecpY0rH",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "latissimus dorsi"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "seated-row",
+      "name": "Remo sentado en polea",
+      "query": "seated cable row",
+      "match": "cable rope elevated seated row",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/c8oybX6.gif",
+      "exerciseId": "c8oybX6",
+      "equipments": [
+        "cable"
+      ],
+      "targetMuscles": [
+        "upper back"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "db-row",
+      "name": "Remo a una mano con mancuerna",
+      "query": "dumbbell row",
+      "match": "Dumbbell Single-Arm Bent-Over Row",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/C0MA9bC.gif",
+      "exerciseId": "C0MA9bC",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "upper back"
+      ]
+    },
+    {
+      "id": "chest-row",
+      "name": "Remo con pecho apoyado",
+      "query": "chest supported row",
+      "match": "Machine T Bar Row",
+      "score": 0.84,
+      "gifUrl": "https://static.exercisedb.dev/media/aaXr7ld.gif",
+      "exerciseId": "aaXr7ld",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "upper back"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "face-pull",
+      "name": "Jalón a la cara",
+      "query": "cable face pull",
+      "match": "Cable Kneeling Rear Delt Row (With Rope)",
+      "score": 0.68,
+      "gifUrl": "https://static.exercisedb.dev/media/G61cXLk.gif",
+      "exerciseId": "G61cXLk",
+      "equipments": [
+        "cable"
+      ],
+      "targetMuscles": [
+        "deltoids"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "shoulder-press",
+      "name": "Press de hombros en máquina",
+      "query": "lever shoulder press",
+      "match": "Machine Single-Arm Shoulder Press",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/2KGnL6M.gif",
+      "exerciseId": "2KGnL6M",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "deltoids"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "pike-push-up",
+      "name": "Flexión en pica",
+      "query": "pike push up",
+      "match": "exercise ball pike push up",
+      "score": 0.88,
+      "gifUrl": "https://static.exercisedb.dev/media/sVvXT5J.gif",
+      "exerciseId": "sVvXT5J",
+      "equipments": [
+        "stability ball"
+      ],
+      "targetMuscles": [
+        "pectorals"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "db-shoulder",
+      "name": "Press de hombros con mancuernas",
+      "query": "dumbbell shoulder press",
+      "match": "Alternating Seated Dumbbell Shoulder Press",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/q7qkONO.gif",
+      "exerciseId": "q7qkONO",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "deltoids"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "lateral-raise",
+      "name": "Elevación lateral con mancuernas",
+      "query": "dumbbell lateral raise",
+      "match": "dumbbell lateral raise",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/DsgkuIt.gif",
+      "exerciseId": "DsgkuIt",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "deltoids"
+      ]
+    },
+    {
+      "id": "lateral-machine",
+      "name": "Elevación lateral en máquina",
+      "query": "lateral raise machine",
+      "match": "Machine Lateral Raise",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/dRTfGZT.gif",
+      "exerciseId": "dRTfGZT",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "deltoids"
+      ]
+    },
+    {
+      "id": "rear-fly",
+      "name": "Apertura posterior en máquina",
+      "query": "reverse pec deck",
+      "match": "dumbbell rear fly",
+      "score": 0.68,
+      "gifUrl": "https://static.exercisedb.dev/media/8DiFDVA.gif",
+      "exerciseId": "8DiFDVA",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "deltoids"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "leg-press",
+      "name": "Prensa de piernas",
+      "query": "leg press",
+      "match": "sled 45° leg press",
+      "score": 1.06,
+      "gifUrl": "https://static.exercisedb.dev/media/10Z2DXU.gif",
+      "exerciseId": "10Z2DXU",
+      "equipments": [
+        "sled machine"
+      ],
+      "targetMuscles": [
+        "glutes"
+      ]
+    },
+    {
+      "id": "goblet-squat",
+      "name": "Sentadilla goblet",
+      "query": "dumbbell goblet squat",
+      "match": "dumbbell goblet squat",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/yn8yg1r.gif",
+      "exerciseId": "yn8yg1r",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "quadriceps"
+      ]
+    },
+    {
+      "id": "hack-squat",
+      "name": "Sentadilla hack",
+      "query": "hack squat",
+      "match": "sled hack squat",
+      "score": 1.06,
+      "gifUrl": "https://static.exercisedb.dev/media/Qa55kX1.gif",
+      "exerciseId": "Qa55kX1",
+      "equipments": [
+        "sled machine"
+      ],
+      "targetMuscles": [
+        "glutes"
+      ]
+    },
+    {
+      "id": "leg-extension",
+      "name": "Extensión de piernas",
+      "query": "leg extension",
+      "match": "Machine Leg Extension",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/my33uHU.gif",
+      "exerciseId": "my33uHU",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "quadriceps"
+      ]
+    },
+    {
+      "id": "split-squat",
+      "name": "Zancada estática con mancuernas",
+      "query": "dumbbell split squat",
+      "match": "dumbbell step-up split squat",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/QjE2DcA.gif",
+      "exerciseId": "QjE2DcA",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "quadriceps"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "db-rdl",
+      "name": "Peso muerto rumano con mancuernas",
+      "query": "dumbbell romanian deadlift",
+      "match": "dumbbell romanian deadlift",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/rR0LJzx.gif",
+      "exerciseId": "rR0LJzx",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "glutes"
+      ]
+    },
+    {
+      "id": "leg-curl",
+      "name": "Curl femoral sentado",
+      "query": "seated leg curl",
+      "match": "Machine Seated Leg Curl",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/Zg3XY7P.gif",
+      "exerciseId": "Zg3XY7P",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "hamstrings"
+      ]
+    },
+    {
+      "id": "hip-thrust",
+      "name": "Empuje de cadera en máquina",
+      "query": "hip thrust machine",
+      "match": "Machine Hip Extension",
+      "score": 0.64,
+      "gifUrl": "https://static.exercisedb.dev/media/OPqShYN.gif",
+      "exerciseId": "OPqShYN",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "glutes"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "db-hip-thrust",
+      "name": "Puente de glúteos con mancuerna",
+      "query": "dumbbell hip thrust",
+      "match": "Barbell Glute Bridge Two-Leg On Bench",
+      "score": 0.48,
+      "gifUrl": "https://static.exercisedb.dev/media/qg2PGl6.gif",
+      "exerciseId": "qg2PGl6",
+      "equipments": [
+        "barbell"
+      ],
+      "targetMuscles": [
+        "glutes"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "abductor",
+      "name": "Abducción de cadera",
+      "query": "hip abduction machine",
+      "match": "Machine Seated Hip Abduction",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/CHpahtl.gif",
+      "exerciseId": "CHpahtl",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "abductors"
+      ]
+    },
+    {
+      "id": "cable-kickback",
+      "name": "Extensión de cadera en polea",
+      "query": "cable glute kickback",
+      "match": "cable kickback",
+      "score": 0.86,
+      "gifUrl": "https://static.exercisedb.dev/media/HEJ6DIX.gif",
+      "exerciseId": "HEJ6DIX",
+      "equipments": [
+        "cable"
+      ],
+      "targetMuscles": [
+        "triceps"
+      ]
+    },
+    {
+      "id": "calf-raise",
+      "name": "Elevación de talones en máquina",
+      "query": "standing calf raise machine",
+      "match": "Machine Standing Calf Raise",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/ykUOVze.gif",
+      "exerciseId": "ykUOVze",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "calves"
+      ]
+    },
+    {
+      "id": "db-calf",
+      "name": "Elevación de talones con mancuernas",
+      "query": "dumbbell calf raise",
+      "match": "dumbbell single leg calf raise",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/1kB3Wmk.gif",
+      "exerciseId": "1kB3Wmk",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "calves"
+      ]
+    },
+    {
+      "id": "db-curl",
+      "name": "Curl alterno con mancuernas",
+      "query": "dumbbell biceps curl",
+      "match": "dumbbell standing biceps curl",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/3s4NnTh.gif",
+      "exerciseId": "3s4NnTh",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "preacher-curl",
+      "name": "Curl predicador en máquina",
+      "query": "preacher curl machine",
+      "match": "Machine Preacher Curl",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/b6hQYMb.gif",
+      "exerciseId": "b6hQYMb",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "hammer-curl",
+      "name": "Curl martillo",
+      "query": "dumbbell hammer curl",
+      "match": "dumbbell hammer curl",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/2NpxjC1.gif",
+      "exerciseId": "2NpxjC1",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "triceps-pushdown",
+      "name": "Extensión de tríceps en polea",
+      "query": "cable triceps pushdown",
+      "match": "cable triceps pushdown (v-bar)",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/gAwDzB3.gif",
+      "exerciseId": "gAwDzB3",
+      "equipments": [
+        "cable"
+      ],
+      "targetMuscles": [
+        "triceps"
+      ]
+    },
+    {
+      "id": "overhead-triceps",
+      "name": "Extensión de tríceps sobre la cabeza",
+      "query": "dumbbell overhead triceps extension",
+      "match": "dumbbell seated bent over triceps extension",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/4ievMJ9.gif",
+      "exerciseId": "4ievMJ9",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "triceps"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "triceps-machine",
+      "name": "Extensión de tríceps en máquina",
+      "query": "triceps extension machine",
+      "match": "Machine Triceps Extension",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/Ser9eQp.gif",
+      "exerciseId": "Ser9eQp",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "triceps"
+      ]
+    },
+    {
+      "id": "cable-crunch",
+      "name": "Crunch en polea",
+      "query": "cable crunch",
+      "match": "cable seated crunch",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/8xUv4J7.gif",
+      "exerciseId": "8xUv4J7",
+      "equipments": [
+        "cable"
+      ],
+      "targetMuscles": [
+        "abdominals"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "plank",
+      "name": "Plancha",
+      "query": "plank",
+      "match": "front plank with twist",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/CosupLu.gif",
+      "exerciseId": "CosupLu",
+      "equipments": [
+        "bodyweight"
+      ],
+      "targetMuscles": [
+        "abdominals"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "dead-bug",
+      "name": "Dead bug",
+      "query": "dead bug",
+      "match": "dead bug",
+      "score": 1.58,
+      "gifUrl": "https://static.exercisedb.dev/media/iny3m5y.gif",
+      "exerciseId": "iny3m5y",
+      "equipments": [
+        "bodyweight"
+      ],
+      "targetMuscles": [
+        "abdominals"
+      ]
+    },
+    {
+      "id": "db-lunge",
+      "name": "Zancada caminando con mancuernas",
+      "query": "dumbbell walking lunge",
+      "match": "dumbbell lunge",
+      "score": 0.56,
+      "gifUrl": "https://static.exercisedb.dev/media/RRWFUcw.gif",
+      "exerciseId": "RRWFUcw",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "glutes"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "smith-squat",
+      "name": "Sentadilla en máquina Smith",
+      "query": "smith machine squat",
+      "match": "smith chair squat",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/Gu2rNJd.gif",
+      "exerciseId": "Gu2rNJd",
+      "equipments": [
+        "smith machine"
+      ],
+      "targetMuscles": [
+        "quadriceps"
+      ]
+    },
+    {
+      "id": "cable-row",
+      "name": "Remo alto en polea",
+      "query": "cable upright row",
+      "match": "cable upright row",
+      "score": 1.58,
+      "gifUrl": "https://static.exercisedb.dev/media/cALKspW.gif",
+      "exerciseId": "cALKspW",
+      "equipments": [
+        "cable"
+      ],
+      "targetMuscles": [
+        "deltoids"
+      ]
+    },
+    {
+      "id": "db-fly",
+      "name": "Apertura inclinada con mancuernas",
+      "query": "incline dumbbell fly",
+      "match": "Dumbbell Single-Arm Fly On Exercise Ball",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/Am02iPd.gif",
+      "exerciseId": "Am02iPd",
+      "equipments": [
+        "dumbbell",
+        "stability ball"
+      ],
+      "targetMuscles": [
+        "pectorals"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "back-extension",
+      "name": "Extensión de espalda en banco",
+      "query": "back extension machine",
+      "match": "Machine Back Extension",
+      "score": 0.72,
+      "gifUrl": "https://static.exercisedb.dev/media/rUXfn3R.gif",
+      "exerciseId": "rUXfn3R",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "erector spinae"
+      ]
+    },
+    {
+      "id": "barbell-squat",
+      "name": "Sentadilla con barra",
+      "query": "barbell squat",
+      "match": "smith chair squat",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/Gu2rNJd.gif",
+      "exerciseId": "Gu2rNJd",
+      "equipments": [
+        "smith machine"
+      ],
+      "targetMuscles": [
+        "quadriceps"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "barbell-row",
+      "name": "Remo con barra",
+      "query": "barbell bent over row",
+      "match": "barbell bent over row",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/eZyBC3j.gif",
+      "exerciseId": "eZyBC3j",
+      "equipments": [
+        "barbell"
+      ],
+      "targetMuscles": [
+        "upper back"
+      ]
+    },
+    {
+      "id": "assisted-pullup",
+      "name": "Dominada asistida en máquina",
+      "query": "assisted pull up machine",
+      "match": "assisted pull-up",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/kiJ4Z2K.gif",
+      "exerciseId": "kiJ4Z2K",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "latissimus dorsi"
+      ]
+    },
+    {
+      "id": "cable-pullover",
+      "name": "Jalón de brazos rectos en polea",
+      "query": "straight arm cable pulldown",
+      "match": "cable straight arm pulldown (with rope)",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/DT14T9T.gif",
+      "exerciseId": "DT14T9T",
+      "equipments": [
+        "cable"
+      ],
+      "targetMuscles": [
+        "latissimus dorsi"
+      ]
+    },
+    {
+      "id": "incline-chest-machine",
+      "name": "Press inclinado en máquina",
+      "query": "incline chest press machine",
+      "match": "Machine Incline Chest Press",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/jHAnWmT.gif",
+      "exerciseId": "jHAnWmT",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "pectorals"
+      ]
+    },
+    {
+      "id": "reverse-lunge",
+      "name": "Zancada hacia atrás con mancuernas",
+      "query": "dumbbell reverse lunge",
+      "match": "dumbbell rear lunge",
+      "score": 0.72,
+      "gifUrl": "https://static.exercisedb.dev/media/62Nw60O.gif",
+      "exerciseId": "62Nw60O",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "glutes"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "single-leg-curl",
+      "name": "Curl femoral unilateral",
+      "query": "single leg curl machine",
+      "match": "Machine Lying Two-Single-Leg Curl",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/UXpKJoq.gif",
+      "exerciseId": "UXpKJoq",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "hamstrings"
+      ]
+    },
+    {
+      "id": "seated-calf",
+      "name": "Elevación de pantorrillas sentado",
+      "query": "seated calf raise machine",
+      "match": "Machine Seated Calf Raise",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/bOOdeyc.gif",
+      "exerciseId": "bOOdeyc",
+      "equipments": [
+        "leverage machine"
+      ],
+      "targetMuscles": [
+        "calves"
+      ]
+    },
+    {
+      "id": "concentration-curl",
+      "name": "Curl de concentración",
+      "query": "dumbbell concentration curl",
+      "match": "dumbbell standing concentration curl",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/7inpWch.gif",
+      "exerciseId": "7inpWch",
+      "equipments": [
+        "dumbbell"
+      ],
+      "targetMuscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "close-grip-pushup",
+      "name": "Flexión con manos juntas",
+      "query": "close grip push up",
+      "match": "incline close-grip push-up",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/1YB40kg.gif",
+      "exerciseId": "1YB40kg",
+      "equipments": [
+        "bodyweight"
+      ],
+      "targetMuscles": [
+        "triceps"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "cable-biceps-curl",
+      "name": "Curl de bíceps en polea",
+      "query": "cable biceps curl",
+      "match": "cable reverse curl",
+      "score": 0.84,
+      "gifUrl": "https://static.exercisedb.dev/media/eOG0r6v.gif",
+      "exerciseId": "eOG0r6v",
+      "equipments": [
+        "cable"
+      ],
+      "targetMuscles": [
+        "biceps"
+      ],
+      "approvedVariant": true
+    },
+    {
+      "id": "glute-bridge",
+      "name": "Puente de glúteos con barra",
+      "query": "barbell glute bridge",
+      "match": "Barbell Glute Bridge Two-Leg On Bench",
+      "score": 1,
+      "gifUrl": "https://static.exercisedb.dev/media/qg2PGl6.gif",
+      "exerciseId": "qg2PGl6",
+      "equipments": [
+        "barbell"
+      ],
+      "targetMuscles": [
+        "glutes"
+      ]
+    }
+  ],
+  "notes": "56 exercise demonstrations. GIFs are streamed from ExerciseDB / AscendAPI. approvedVariant marks a clearly labelled movement variation when the catalog has no exact match."
+}
