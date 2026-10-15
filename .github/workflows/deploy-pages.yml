@@ -1,0 +1,39 @@
+name: Deploy Forja to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Prepare app files
+        run: |
+          mkdir -p _site
+          cp index.html app.js features.js forja-core.js styles.css sw.js manifest.json manifest-light.json icon.svg dataset-exercises.json exercise-media.json vista-movil-mapa.png THIRD-PARTY-NOTICES.md _site/
+          cp -R vendor exercise-assets _site/
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Deploy site
+        id: deployment
+        uses: actions/deploy-pages@v4
