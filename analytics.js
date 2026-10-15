@@ -74,9 +74,9 @@ function formatStorageSize(bytes) {
 }
 
 async function renderDeviceStorageStatus() {
-  const node = $('#device-storage-status');
+  const node = $('#device-storage-status'), button = $('#protect-device-storage');
   if (!node) return;
-  if (!navigator.storage?.estimate) { node.textContent = 'Este navegador no ofrece una estimación del espacio local.'; return; }
+  if (!navigator.storage?.estimate) { node.textContent = 'Este navegador no ofrece una estimación del espacio local.'; if (button) { button.disabled = true; button.textContent = 'Protección no disponible'; } return; }
   try {
     const [estimate, persisted] = await Promise.all([
       navigator.storage.estimate(),
@@ -85,8 +85,30 @@ async function renderDeviceStorageStatus() {
     const used = formatStorageSize(estimate.usage), quota = formatStorageSize(estimate.quota);
     const amount = used ? `${used}${quota ? ` de ${quota}` : ''} usados en el dispositivo` : 'No se pudo estimar el uso local';
     node.textContent = `${amount} · ${persisted ? 'almacenamiento persistente' : 'el navegador puede liberar espacio poco usado'}. App, copias y medios comparten cuota.`;
+    if (button) {
+      button.disabled = Boolean(persisted) || !navigator.storage.persist;
+      button.textContent = persisted ? 'Protección de datos activa' : navigator.storage.persist ? 'Proteger datos guardados' : 'Protección no disponible';
+    }
   } catch {
     node.textContent = 'No se pudo consultar el espacio local. Exporta un respaldo si necesitas recuperar tus datos.';
+    if (button) { button.disabled = !navigator.storage.persist; button.textContent = 'Proteger datos guardados'; }
+  }
+}
+
+async function requestPersistentStorage() {
+  const button = $('#protect-device-storage');
+  if (!navigator.storage?.persist) {
+    toast('Este navegador no ofrece protección de almacenamiento. Conserva también un respaldo completo.');
+    return;
+  }
+  if (button) { button.disabled = true; button.textContent = 'Consultando…'; }
+  try {
+    const granted = await navigator.storage.persist();
+    await renderDeviceStorageStatus();
+    toast(granted ? 'El navegador protegerá mejor los datos de Forja frente a la limpieza automática.' : 'El navegador no concedió almacenamiento persistente. Descarga un respaldo completo con frecuencia.');
+  } catch {
+    if (button) { button.disabled = false; button.textContent = 'Proteger datos guardados'; }
+    toast('No pude solicitar protección de almacenamiento. Conserva un respaldo completo.');
   }
 }
 

@@ -12,6 +12,27 @@
     return Number.isFinite(parsed) ? parsed : fallback;
   }
 
+  function normalizeTimerSnapshot(snapshot, now = Date.now()) {
+    if (!snapshot || typeof snapshot !== 'object' || Array.isArray(snapshot)) return null;
+    const duration = Number(snapshot.duration), deadline = Number(snapshot.deadline), remaining = Number(snapshot.remaining);
+    const currentTime = now instanceof Date ? now.getTime() : Number(now);
+    const maxDuration = 8 * 60 * 60 * 1000;
+    if (!Number.isFinite(duration) || duration < 1000 || duration > maxDuration || !Number.isFinite(currentTime)) return null;
+    const paused = Boolean(snapshot.paused);
+    if (paused && !Number.isFinite(remaining)) return null;
+    if (!paused && !Number.isFinite(deadline)) return null;
+    const timeLeft = Math.max(0, Math.min(duration, paused ? remaining : deadline - currentTime));
+    const label = String(snapshot.label || 'Descanso').replace(/[<>\u0000-\u001f\u007f]/g, '').trim().slice(0, 100) || 'Descanso';
+    return {
+      duration,
+      deadline: paused ? currentTime + timeLeft : deadline,
+      remaining: timeLeft,
+      paused: paused || timeLeft === 0,
+      label,
+      alerted: Boolean(snapshot.alerted)
+    };
+  }
+
   function localDayKey(value) {
     const date = new Date(value || '');
     if (!Number.isFinite(date.getTime())) return '';
@@ -870,7 +891,7 @@
   }
 
   const api = {
-    mergeCloudDatabases, normalizeBackup, createBackup, toggleSyncedFavorite, unionBy,
+    mergeCloudDatabases, normalizeBackup, createBackup, normalizeTimerSnapshot, toggleSyncedFavorite, unionBy,
     estimated1RM, convertLoad, rirFromRpe, seedWorkoutSets, repeatWorkoutSession, undoLastSetCompletion, predictLoad, recommendProgression, detectStagnation, wellnessPerformanceCorrelation,
     workoutTimestamp, completedWorkouts, calendarWeekStart, workoutsInCalendarWeek, countChallengeSessions, trainingBlockState, claimDueReminders, isQuietHours, retainDailyBackups, suggestRoutineIds, limitBackupPhotos,
     exerciseProgressSeries, muscleVolumeSeries, trainingIntelligence

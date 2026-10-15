@@ -20,6 +20,7 @@ let exerciseMediaIndex = {};
 let exerciseCatalogPage = 1;
 const EXERCISE_CATALOG_PAGE_SIZE = 36;
 let mediaDownloadJob = null;
+const REST_TIMER_STORAGE_KEY = 'forja_rest_timer_v1';
 
 function initializePwaControls() {
   db.accessibility ||= {};
@@ -502,18 +503,41 @@ function startWarmup() {
   tickTimer();
 }
 function startCooldown() { startTimer(240, 'Enfriamiento guiado'); }
+function saveRestTimerSnapshot() {
+  try {
+    if (!timerState) { localStorage.removeItem(REST_TIMER_STORAGE_KEY); return; }
+    localStorage.setItem(REST_TIMER_STORAGE_KEY, JSON.stringify(timerState));
+  } catch { /* El cronómetro sigue funcionando si el almacenamiento está lleno. */ }
+}
+function restoreTimerState() {
+  let snapshot;
+  try { snapshot = JSON.parse(localStorage.getItem(REST_TIMER_STORAGE_KEY) || 'null'); } catch {}
+  const restored = ForjaCore.normalizeTimerSnapshot(snapshot, Date.now());
+  if (!restored) { try { localStorage.removeItem(REST_TIMER_STORAGE_KEY); } catch {} return; }
+  timerState = restored;
+  const eyebrow = $('#timer-overlay .eyebrow');
+  if (eyebrow) eyebrow.textContent = restored.label === 'Calentamiento guiado' ? 'CALENTAMIENTO' : restored.label === 'Enfriamiento guiado' ? 'ENFRIAMIENTO' : 'DESCANSO ENTRE SERIES';
+  $('#timer-exercise').textContent = restored.label;
+  $('#timer-overlay').hidden = false;
+  if (restored.remaining === 0 && !restored.alerted) {
+    restored.alerted = true;
+    saveRestTimerSnapshot();
+    if (Date.now() - Number(snapshot.deadline) <= 120000) timerAlert();
+  }
+  tickTimer();
+}
 function startTimer(seconds, label) {
   primeTimerAudio();
   if (voiceEnabled) voiceSpeak(`Descansa ${seconds} segundos después de ${label}.`);
-  timerState = { duration: seconds * 1000, deadline: Date.now() + seconds * 1000, remaining: seconds * 1000, paused: false, label };
+  timerState = { duration: seconds * 1000, deadline: Date.now() + seconds * 1000, remaining: seconds * 1000, paused: false, label, alerted: false };
   const eyebrow = $('#timer-overlay .eyebrow'); if (eyebrow) eyebrow.textContent = label === 'Calentamiento guiado' ? 'CALENTAMIENTO' : label === 'Enfriamiento guiado' ? 'ENFRIAMIENTO' : 'DESCANSO ENTRE SERIES';
-  $('#timer-exercise').textContent = label; $('#timer-overlay').hidden = false; $('#timer-pause').textContent = 'Pausar'; tickTimer();
+  $('#timer-exercise').textContent = label; $('#timer-overlay').hidden = false; $('#timer-pause').textContent = 'Pausar'; saveRestTimerSnapshot(); tickTimer();
 }
 function tickTimer() {
   if (!timerState) return;
   if (!timerState.paused) {
     timerState.remaining = Math.max(0, timerState.deadline - Date.now());
-    if (timerState.remaining === 0) { timerAlert(); timerState.paused = true; }
+    if (timerState.remaining === 0) { timerAlert(); timerState.paused = true; timerState.alerted = true; saveRestTimerSnapshot(); }
   }
   const ms = timerState.remaining;
   $('#timer-display').textContent = clock(ms);

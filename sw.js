@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'forja-shell-v27';
+const SHELL_CACHE = 'forja-shell-v28';
 const MEDIA_CACHE = 'forja-media-v3';
 const OFFLINE_MEDIA_CACHE = 'forja-media-v2';
 const MAX_MEDIA_CACHE_ENTRIES = 180;

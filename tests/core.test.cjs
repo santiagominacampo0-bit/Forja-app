@@ -365,3 +365,22 @@ test('backup normalization preserves safe accessibility preferences and quiet re
   assert.deepEqual(restored.data.profiles[0].data.reminders.quietHours, { enabled: true, start: '21:30', end: '06:30' });
   assert.equal(restored.data.profiles[0].data.reminders.snoozedUntil, '2026-01-01T20:00:00.000Z');
 });
+
+test('rest timer restores elapsed time, preserves a pause and rejects unsafe snapshots', () => {
+  const now = 10_000_000;
+  const running = ForjaCore.normalizeTimerSnapshot({ duration: 90_000, deadline: now + 45_000, remaining: 90_000, paused: false, label: 'Descanso <serie>' }, now);
+  assert.equal(running.remaining, 45_000);
+  assert.equal(running.paused, false);
+  assert.equal(running.label, 'Descanso serie');
+
+  const paused = ForjaCore.normalizeTimerSnapshot({ duration: 90_000, deadline: now - 50_000, remaining: 30_000, paused: true, label: 'Pausa' }, now);
+  assert.equal(paused.remaining, 30_000);
+  assert.equal(paused.deadline, now + 30_000);
+  assert.equal(paused.paused, true);
+
+  const expired = ForjaCore.normalizeTimerSnapshot({ duration: 90_000, deadline: now - 5_000, paused: false, label: 'Descanso' }, now);
+  assert.equal(expired.remaining, 0);
+  assert.equal(expired.paused, true);
+  assert.equal(ForjaCore.normalizeTimerSnapshot({ duration: 0, deadline: now + 1000, paused: false }, now), null);
+  assert.equal(ForjaCore.normalizeTimerSnapshot({ duration: 60_000, remaining: 'bad', paused: true }, now), null);
+});

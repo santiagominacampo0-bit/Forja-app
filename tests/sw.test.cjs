@@ -73,10 +73,10 @@ test('service worker precaches the complete shell and purges stale shell generat
   sw.stores.set('forja-media-v2', new Map());
   sw.stores.set('other-app-cache', new Map());
   await sw.dispatch('install');
-  assert.ok(sw.stores.has('forja-shell-v27'));
-  assert.equal(sw.stores.get('forja-shell-v27').size, 16);
+  assert.ok(sw.stores.has('forja-shell-v28'));
+  assert.equal(sw.stores.get('forja-shell-v28').size, 16);
   for (const file of ['/storage.js', '/sync.js', '/analytics.js', '/workout-ui.js']) {
-    assert.ok(sw.stores.get('forja-shell-v27').has(`${scope.slice(0, -1)}${file}`), `${file} is available offline`);
+    assert.ok(sw.stores.get('forja-shell-v28').has(`${scope.slice(0, -1)}${file}`), `${file} is available offline`);
   }
   await sw.dispatch('activate');
   assert.equal(sw.stores.has('forja-shell-old'), false);
