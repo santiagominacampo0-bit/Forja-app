@@ -381,4 +381,6 @@ body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{sc
 .progression-evidence{display:block;margin-top:4px;color:var(--muted-2);font-size:8px}.history-actions{display:flex;margin-top:10px}.history-actions .button,.undo-set-button{min-height:46px;touch-action:manipulation}.undo-set-button{padding:0 12px}.auto-backup-panel .micro-note+#device-storage-status{color:var(--muted-2)}
 .storage-protection{display:flex;align-items:center;gap:10px;margin-top:8px}.storage-protection .button{min-height:42px;flex:0 0 auto}.storage-protection .button:disabled{opacity:.7}.storage-protection .micro-note{margin:0;color:var(--muted-2)}
 @media(max-width:680px){.storage-protection{align-items:stretch;flex-direction:column}.storage-protection .button{width:100%;min-height:48px}.storage-protection .micro-note{line-height:1.5}}
+.vibration-status{max-width:190px;color:var(--muted-2);font-size:8px;line-height:1.4}.vibration-status:empty{display:none}
+@media(max-width:680px){.vibration-status{flex-basis:100%;max-width:none}}
 @media(max-width:680px){.history-actions .button{width:100%;min-height:48px}.undo-set-button{flex:1;min-height:48px}.workout-progress .next-set-button{min-height:48px}}

@@ -22,11 +22,21 @@ const EXERCISE_CATALOG_PAGE_SIZE = 36;
 let mediaDownloadJob = null;
 const REST_TIMER_STORAGE_KEY = 'forja_rest_timer_v1';
 
+function updateVibrationControl() {
+  const button = $('#vibration-toggle'), status = $('#vibration-status');
+  if (!button) return;
+  const supported = typeof navigator.vibrate === 'function', enabled = supported && db.accessibility?.vibration !== false;
+  button.setAttribute('aria-pressed', String(enabled));
+  button.setAttribute('aria-label', supported ? `${enabled ? 'Desactivar' : 'Activar'} vibración` : 'Vibración no disponible en este navegador');
+  button.title = supported ? `${enabled ? 'Vibración activada' : 'Vibración desactivada'} · al completar series y al terminar el descanso` : 'Este navegador no ofrece vibración web; el sonido del temporizador sigue disponible.';
+  if (status) status.textContent = supported ? '' : 'Vibración no disponible aquí; el sonido sigue activo.';
+}
+
 function initializePwaControls() {
   db.accessibility ||= {};
   if (![100, 112, 125].includes(Number(db.accessibility.fontScale))) db.accessibility.fontScale = db.accessibility.largeText ? 112 : 100;
   applyAccessibilitySettings();
-  $('#vibration-toggle').setAttribute('aria-pressed', String(db.accessibility?.vibration !== false));
+  updateVibrationControl();
   loadExerciseMediaIndex();
   $('#cache-exercise-images')?.addEventListener('click', () => cacheExerciseMediaOffline('images'));
   $('#cache-exercise-gifs')?.addEventListener('click', () => cacheExerciseMediaOffline('animations'));
@@ -161,10 +171,16 @@ function saveAccessibilitySettings() {
   applyAccessibilitySettings(); persist();
 }
 function toggleVibration() {
+  if (typeof navigator.vibrate !== 'function') {
+    updateVibrationControl();
+    toast('Este navegador no permite vibración web. El aviso sonoro del temporizador sigue funcionando.');
+    return;
+  }
   db.accessibility ||= {}; db.accessibility.vibration = db.accessibility.vibration === false;
-  $('#vibration-toggle').setAttribute('aria-pressed', String(db.accessibility.vibration));
-  if (db.accessibility.vibration && navigator.vibrate) navigator.vibrate(25);
-  persist(); toast(db.accessibility.vibration ? 'Vibración activada.' : 'Vibración desactivada.');
+  updateVibrationControl();
+  const result = db.accessibility.vibration ? navigator.vibrate(45) : true;
+  persist();
+  toast(!db.accessibility.vibration ? 'Vibración desactivada.' : result === false ? 'El navegador rechazó la prueba. Revisa los ajustes de vibración del teléfono.' : 'Prueba de vibración enviada. Si no la sientes, revisa los ajustes de vibración y No molestar.');
 }
 async function installApp() {
   if (!installPromptEvent) { toast('Usa el menú del navegador y elige “Añadir a pantalla de inicio”.'); return; }
