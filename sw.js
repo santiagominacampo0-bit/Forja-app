@@ -1,8 +1,8 @@
-const SHELL_CACHE = 'forja-shell-v25';
+const SHELL_CACHE = 'forja-shell-v27';
 const MEDIA_CACHE = 'forja-media-v3';
 const OFFLINE_MEDIA_CACHE = 'forja-media-v2';
 const MAX_MEDIA_CACHE_ENTRIES = 180;
-const CORE = ['./', './index.html', './styles.css', './forja-core.js', './app.js', './features.js', './vendor/muscle-map.js', './exercise-media.json', './dataset-exercises.json', './manifest.json', './manifest-light.json', './icon.svg'];
+const CORE = ['./', './index.html', './styles.css', './forja-core.js', './app.js', './features.js', './storage.js', './sync.js', './analytics.js', './workout-ui.js', './vendor/muscle-map.js', './exercise-media.json', './dataset-exercises.json', './manifest.json', './manifest-light.json', './icon.svg'];
 const SHELL_URLS = new Set(CORE.map((path) => new URL(path, self.registration.scope).href));
 
 self.addEventListener('install', (event) => {

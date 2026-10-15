@@ -93,8 +93,8 @@ test('calendar week starts Monday and includes only sessions up to the supplied 
 test('intelligence compares calendar weeks consistently and ignores future workouts', () => {
   const now = new Date(2026, 9, 15, 12);
   const sessions = [
-    workout('last-friday', localIso(2026, 10, 9)),
-    workout('last-saturday', localIso(2026, 10, 10)),
+    workout('last-monday', localIso(2026, 10, 5)),
+    workout('last-wednesday', localIso(2026, 10, 7)),
     workout('this-monday', localIso(2026, 10, 12)),
     workout('future-friday', localIso(2026, 10, 16))
   ];
@@ -113,9 +113,9 @@ test('volume suggestions ask for a baseline until a prior week has recorded volu
   assert.match(volumeSuggestion([]), /semana anterior con volumen registrado/);
   assert.match(volumeSuggestion([workout('this-week', localIso(2026, 10, 12))]), /semana anterior con volumen registrado/);
   assert.match(volumeSuggestion([
-    workout('last-week', localIso(2026, 10, 9)),
+    workout('last-week', localIso(2026, 10, 5)),
     workout('this-week', localIso(2026, 10, 12))
-  ]), /volumen semanal está estable/);
+  ]), /volumen va estable frente al mismo tramo/);
 });
 
 test('completed workout filters reject invalid and future dates but preserve legacy start dates', () => {
@@ -272,6 +272,70 @@ test('progression needs two complete easy top-range sessions before raising the 
   assert.equal(hard.suggested, 40);
   assert.match(hard.reason, /RPE medio/);
   assert.equal(ForjaCore.recommendProgression({ sessions: [{ sets: [{ weight: 'bad', reps: 0 }] }] }).action, 'record');
+});
+
+test('workout set seeding carries the previous session across units and resets completion', () => {
+  const sets = ForjaCore.seedWorkoutSets([
+    { weight: 100, weightUnit: 'lb', reps: 10, rpe: 7, done: true },
+    { weight: 105, weightUnit: 'lb', reps: 8, rpe: 9, done: true },
+    { weight: 200, weightUnit: 'lb', reps: 2, done: false }
+  ], 3, '8–12', 'kg');
+  assert.equal(sets.length, 3);
+  assert.ok(Math.abs(Number(sets[0].weight) - 45.36) < 0.01);
+  assert.equal(sets[0].reps, '10');
+  assert.equal(sets[1].reps, '8');
+  assert.equal(sets[2].reps, '8');
+  assert.deepEqual(sets.map((set) => set.done), [false, false, false]);
+  assert.equal(sets[1].rpe, 9);
+  assert.equal(ForjaCore.seedWorkoutSets([], 2, '8–12', 'kg')[0].reps, '10');
+  assert.deepEqual(ForjaCore.seedWorkoutSets([{ weight: 'Infinity', reps: 'Infinity', done: true }], 1, '999', 'kg'), [
+    { weight: '', reps: '100', rpe: 8, done: false }
+  ]);
+});
+
+test('repeating a workout resets finished state while preserving exercise structure', () => {
+  const previous = {
+    id: 'old', routineId: 'custom', name: 'Torso', finishedAt: '2026-01-01T10:00:00Z',
+    exercises: [{ exerciseId: 'db-bench', reps: '8–12', targetSets: 2, rest: 90, supersetId: 'pair-1', notes: 'pausa', sets: [
+      { weight: 40, weightUnit: 'kg', reps: 12, rpe: 8, done: true, completedAt: '2026-01-01T10:10:00Z' },
+      { weight: 40, weightUnit: 'kg', reps: 10, rpe: 9, done: true }
+    ] }]
+  };
+  const repeated = ForjaCore.repeatWorkoutSession(previous, 'new', '2026-01-08T10:00:00Z', 'lb');
+  assert.equal(repeated.id, 'new');
+  assert.equal(repeated.name, 'Torso');
+  assert.equal(repeated.exercises[0].supersetId, 'pair-1');
+  assert.equal(repeated.exercises[0].sets[0].reps, '12');
+  assert.ok(Math.abs(Number(repeated.exercises[0].sets[0].weight) - 88.18) < 0.02);
+  assert.ok(repeated.exercises[0].sets.every((set) => !set.done && !set.completedAt));
+  assert.equal(ForjaCore.repeatWorkoutSession({ exercises: [] }, 'empty'), null);
+});
+
+test('undo reverts only the last unchanged set completion and restores next exercise', () => {
+  const session = {
+    nextExerciseIndex: 1,
+    exercises: [{ sets: [{ weight: '60', weightUnit: 'kg', reps: 8, rpe: 8, done: true, completedAt: 'now' }] }],
+    lastSetAction: { exerciseIndex: 0, setIndex: 0, completedAt: 'now', previousSet: { weight: '55', reps: '10', rpe: 7, done: false }, previousNextExerciseIndex: 0 }
+  };
+  assert.equal(ForjaCore.undoLastSetCompletion(session), true);
+  assert.deepEqual(session.exercises[0].sets[0], { weight: '55', reps: '10', rpe: 7, done: false });
+  assert.equal(session.nextExerciseIndex, 0);
+  assert.equal(Object.hasOwn(session, 'lastSetAction'), false);
+  const stale = { exercises: [{ sets: [{ done: true, completedAt: 'later' }] }], lastSetAction: { exerciseIndex: 0, setIndex: 0, completedAt: 'before', previousSet: {} } };
+  assert.equal(ForjaCore.undoLastSetCompletion(stale), false);
+});
+
+test('personal schedule suggestions wait for four recent completed sessions', () => {
+  const now = new Date(2026, 9, 15, 12);
+  const sessions = [
+    workout('a', localIso(2026, 10, 1, 8)), workout('b', localIso(2026, 10, 4, 9)),
+    workout('c', localIso(2026, 10, 8, 8)), workout('d', localIso(2026, 10, 12, 9)),
+    workout('future', localIso(2026, 10, 16, 8))
+  ];
+  const schedule = (items) => ForjaCore.trainingIntelligence({ workouts: items, now }).suggestions.find((item) => item.kind === 'schedule').text;
+  assert.match(schedule(sessions.slice(0, 3)), /3\/4/);
+  assert.match(schedule(sessions), /mañana/);
+  assert.doesNotMatch(schedule(sessions), /future/);
 });
 
 test('routine suggestions return stable templates for supported training frequencies', () => {

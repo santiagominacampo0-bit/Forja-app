@@ -555,6 +555,70 @@
     return toUnit === 'lb' ? kilograms * 2.2046226218 : kilograms;
   }
 
+  function seedWorkoutSets(previousSets = [], count = 1, repTarget = 10, unit = 'kg') {
+    const usable = (Array.isArray(previousSets) ? previousSets : []).filter((set) => set && set.done !== false && Number.isFinite(Number(set.reps)) && Number(set.reps) > 0);
+    const targets = String(repTarget ?? '').match(/\d+/g) || [];
+    const fallbackReps = Math.max(1, Math.min(100, targets.length ? Math.round(targets.map(Number).reduce((sum, value) => sum + value, 0) / targets.length) : 10));
+    const total = Math.max(1, Math.min(50, Math.floor(Number(count) || 1)));
+    return Array.from({ length: total }, (_, index) => {
+      const previous = usable.length ? usable[Math.min(index, usable.length - 1)] : null;
+      const previousWeight = Number(previous?.weight);
+      const convertedWeight = Number.isFinite(previousWeight) && previousWeight > 0
+        ? convertLoad(previousWeight, previous.weightUnit || 'kg', unit)
+        : 0;
+      const load = convertedWeight > 0 ? String(Number(Math.min(999, convertedWeight).toFixed(2))) : '';
+      const rpe = Number(previous?.rpe) || 8;
+      const reps = Number(previous?.reps);
+      return {
+        weight: load,
+        reps: String(Number.isFinite(reps) && reps > 0 ? Math.min(100, reps) : fallbackReps),
+        rpe: Math.max(1, Math.min(10, rpe)),
+        done: false
+      };
+    });
+  }
+
+  function repeatWorkoutSession(workout, id, startedAt = new Date().toISOString(), unit = 'kg') {
+    if (!workout || !Array.isArray(workout.exercises)) return null;
+    const exercises = workout.exercises.filter((entry) => entry && typeof entry.exerciseId === 'string').map((entry) => {
+      const history = Array.isArray(entry.sets) ? entry.sets : [];
+      const targetSets = Math.max(1, Math.min(50, Math.floor(Number(entry.targetSets) || history.length || 1)));
+      const reps = String(entry.reps || '10');
+      return {
+        exerciseId: entry.exerciseId,
+        targetSets,
+        reps,
+        unit: entry.unit === 'seconds' || /s$/.test(reps) ? 'seconds' : 'reps',
+        rest: Math.max(0, Math.min(600, Number(entry.rest) || 90)),
+        sets: seedWorkoutSets(history, targetSets, reps, unit),
+        ...(entry.supersetId ? { supersetId: entry.supersetId } : {}),
+        ...(entry.replacedExerciseId ? { replacedExerciseId: entry.replacedExerciseId } : {}),
+        ...(entry.replacedExerciseName ? { replacedExerciseName: entry.replacedExerciseName } : {})
+      };
+    });
+    if (!exercises.length) return null;
+    return {
+      id,
+      routineId: typeof workout.routineId === 'string' ? workout.routineId : null,
+      name: String(workout.name || 'Sesión repetida').slice(0, 80),
+      startedAt,
+      updatedAt: startedAt,
+      exercises
+    };
+  }
+
+  function undoLastSetCompletion(session) {
+    const action = session?.lastSetAction;
+    const set = session?.exercises?.[action?.exerciseIndex]?.sets?.[action?.setIndex];
+    if (!action || !set || !set.done || set.completedAt !== action.completedAt || !action.previousSet || typeof action.previousSet !== 'object') return false;
+    for (const key of Object.keys(set)) delete set[key];
+    Object.assign(set, structuredClone(action.previousSet));
+    session.nextExerciseIndex = action.previousNextExerciseIndex ?? null;
+    delete session.lastSetAction;
+    session.updatedAt = new Date().toISOString();
+    return true;
+  }
+
   function rirFromRpe(rpe) {
     const value = Number(rpe);
     if (!Number.isFinite(value)) return null;
@@ -734,17 +798,23 @@
 
   function trainingIntelligence({ workouts = [], preferences = {}, readiness = [], block = {}, now = new Date() } = {}) {
     const daysPerWeek = Number(preferences.daysPerWeek) || 3;
-    const weekMs = 7 * 86400000;
     const reference = now instanceof Date ? now : new Date(now);
     const currentWeekStart = calendarWeekStart(reference);
     if (!currentWeekStart) return { frequencyScore: 0, thisWeekSessions: 0, daysPerWeek, thisVolume: 0, lastVolume: 0, volumeTrend: 0, consistencyDays: 0, stagnation: { stalled: false, change: 0, sample: 0 }, stagnationByExercise: [], wellness: wellnessPerformanceCorrelation([], []), suggestions: [], deload: Boolean(block.deload) };
     const currentStart = currentWeekStart.getTime();
-    const lastWeekStart = currentStart - weekMs;
-    const fourWeekStart = currentStart - weekMs * 3;
+    const comparisonStartDate = new Date(currentWeekStart);
+    comparisonStartDate.setDate(comparisonStartDate.getDate() - 7);
+    const comparisonEndDate = new Date(reference);
+    comparisonEndDate.setDate(comparisonEndDate.getDate() - 7);
+    const fourWeekStartDate = new Date(currentWeekStart);
+    fourWeekStartDate.setDate(fourWeekStartDate.getDate() - 21);
+    const comparisonStart = comparisonStartDate.getTime();
+    const comparisonEnd = comparisonEndDate.getTime();
+    const fourWeekStart = fourWeekStartDate.getTime();
     const allCompleted = completedWorkouts(workouts, reference);
     const recent = allCompleted.filter((workout) => workoutTimestamp(workout) >= fourWeekStart);
     const thisWeek = recent.filter((workout) => workoutTimestamp(workout) >= currentStart);
-    const lastWeek = allCompleted.filter((workout) => workoutTimestamp(workout) >= lastWeekStart && workoutTimestamp(workout) < currentStart);
+    const lastWeek = allCompleted.filter((workout) => workoutTimestamp(workout) >= comparisonStart && workoutTimestamp(workout) < comparisonEnd);
     const volume = (list) => list.reduce((total, workout) => total + (workout.exercises || []).reduce((sum, entry) => sum + (entry.sets || []).filter((set) => set.done).reduce((inner, set) => inner + convertLoad(set.weight, set.weightUnit, 'kg') * (Number(set.reps) || 0), 0), 0), 0);
     const thisVolume = volume(thisWeek), lastVolume = volume(lastWeek);
     const frequencyScore = Math.min(1, thisWeek.length / Math.max(1, daysPerWeek));
@@ -776,14 +846,22 @@
     if (frequencyScore < 0.7) suggestions.push({ kind: 'frequency', text: `Llevas ${thisWeek.length} de ${daysPerWeek} sesiones esta semana. Un hueco corto hoy mantiene la frecuencia.` });
     else suggestions.push({ kind: 'frequency', text: `Frecuencia al día: ${thisWeek.length}/${daysPerWeek} sesiones esta semana.` });
     if (!lastVolume) suggestions.push({ kind: 'volume', text: 'Aún no hay una semana anterior con volumen registrado para comparar. Sigue registrando sesiones con carga para crear una referencia.' });
-    else if (volumeTrend < -0.15) suggestions.push({ kind: 'volume', text: 'El volumen semanal bajó más de un 15%. Recupera series o reduce el RPE en vez de forzar la carga.' });
-    else if (volumeTrend > 0.2) suggestions.push({ kind: 'volume', text: 'El volumen subió rápido. Conserva técnica y deja repeticiones en reserva.' });
-    else suggestions.push({ kind: 'volume', text: 'El volumen semanal está estable. Sigue progresando por repeticiones o pequeños saltos de carga.' });
+    else if (volumeTrend < -0.15) suggestions.push({ kind: 'volume', text: 'El volumen de este tramo bajó más de un 15% frente al mismo tramo anterior. Recupera series o reduce el RPE en vez de forzar la carga.' });
+    else if (volumeTrend > 0.2) suggestions.push({ kind: 'volume', text: 'El volumen del tramo actual subió más de un 20% frente al tramo comparable anterior. Conserva técnica y deja repeticiones en reserva.' });
+    else suggestions.push({ kind: 'volume', text: 'El volumen va estable frente al mismo tramo de la semana anterior. Sigue progresando por repeticiones o pequeños saltos de carga.' });
     if (stagnation.stalled) suggestions.push({ kind: 'stagnation', text: 'Posible estancamiento en la fuerza estimada. Cambia el rango de repeticiones o programa una descarga.' });
     if (block.deload) suggestions.push({ kind: 'deload', text: 'Semana de descarga automática: Forja ya redujo las series planificadas para facilitar la recuperación.' });
-    const hours = reference.getHours();
-    if (hours < 11) suggestions.push({ kind: 'schedule', text: 'Las mañanas suelen funcionar si el sueño fue suficiente; si llegas cansado, mueve la sesión al final del día.' });
-    else if (hours >= 20) suggestions.push({ kind: 'schedule', text: 'Entrena con calma si es tarde: acorta descansos de aislamiento y prioriza el sueño.' });
+    const hourBuckets = recent.reduce((counts, workout) => {
+      const hour = new Date(workout.finishedAt || workout.startedAt).getHours();
+      if (Number.isFinite(hour)) {
+        const bucket = hour < 12 ? 'mañana' : hour < 18 ? 'tarde' : 'noche';
+        counts[bucket] = (counts[bucket] || 0) + 1;
+      }
+      return counts;
+    }, {});
+    const preferredTime = Object.entries(hourBuckets).sort((a, b) => b[1] - a[1])[0];
+    if (recent.length >= 4 && preferredTime) suggestions.push({ kind: 'schedule', text: `Tu horario más frecuente en las últimas 4 semanas fue la ${preferredTime[0]} (${preferredTime[1]} de ${recent.length} sesiones).` });
+    else suggestions.push({ kind: 'schedule', text: `Aún faltan sesiones con hora registrada (${recent.length}/4 en las últimas 4 semanas) para sugerir un horario propio.` });
     if (consistencyDays >= 8) suggestions.push({ kind: 'variation', text: 'Buena constancia de 4 semanas. Introduce una variante del movimiento principal para seguir progresando.' });
     return {
       frequencyScore, thisWeekSessions: thisWeek.length, daysPerWeek, thisVolume, lastVolume, volumeTrend,
@@ -793,7 +871,7 @@
 
   const api = {
     mergeCloudDatabases, normalizeBackup, createBackup, toggleSyncedFavorite, unionBy,
-    estimated1RM, convertLoad, rirFromRpe, predictLoad, recommendProgression, detectStagnation, wellnessPerformanceCorrelation,
+    estimated1RM, convertLoad, rirFromRpe, seedWorkoutSets, repeatWorkoutSession, undoLastSetCompletion, predictLoad, recommendProgression, detectStagnation, wellnessPerformanceCorrelation,
     workoutTimestamp, completedWorkouts, calendarWeekStart, workoutsInCalendarWeek, countChallengeSessions, trainingBlockState, claimDueReminders, isQuietHours, retainDailyBackups, suggestRoutineIds, limitBackupPhotos,
     exerciseProgressSeries, muscleVolumeSeries, trainingIntelligence
   };
