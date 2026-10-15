@@ -7,6 +7,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'sw.js'), 'utf8');
+const deployWorkflow = fs.readFileSync(path.join(__dirname, '..', '.github', 'workflows', 'deploy-pages.yml'), 'utf8');
 const scope = 'https://forja.example/';
 
 function serviceWorkerHarness() {
@@ -82,6 +83,13 @@ test('service worker precaches the complete shell and purges stale shell generat
   assert.equal(sw.stores.has('forja-media-old'), false);
   assert.equal(sw.stores.has('forja-media-v2'), true);
   assert.equal(sw.stores.has('other-app-cache'), true);
+});
+
+test('GitHub Pages artifact includes every extracted runtime module', () => {
+  const prepareStep = deployWorkflow.split('name: Prepare app files')[1]?.split('name: Upload site artifact')[0] || '';
+  for (const file of ['storage.js', 'sync.js', 'analytics.js', 'workout-ui.js']) {
+    assert.ok(prepareStep.includes(file), `${file} is copied into the Pages artifact`);
+  }
 });
 
 test('offline navigation and cached shell resources remain available without the network', async () => {

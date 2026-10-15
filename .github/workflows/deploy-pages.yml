@@ -28,7 +28,7 @@ jobs:
       - name: Prepare app files
         run: |
           mkdir -p _site
-          cp index.html app.js features.js forja-core.js styles.css sw.js manifest.json manifest-light.json icon.svg dataset-exercises.json exercise-media.json vista-movil-mapa.png THIRD-PARTY-NOTICES.md _site/
+          cp index.html app.js features.js forja-core.js storage.js sync.js analytics.js workout-ui.js styles.css sw.js manifest.json manifest-light.json icon.svg dataset-exercises.json exercise-media.json vista-movil-mapa.png THIRD-PARTY-NOTICES.md _site/
           cp -R vendor exercise-assets _site/
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v4
